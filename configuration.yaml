@@ -1,0 +1,93 @@
+homeassistant:
+#  auth_providers: 
+#   - type: homeassistant
+#   - type: legacy_api_password
+  name: Дом
+  temperature_unit: C
+  time_zone: Europe/Moscow
+  latitude: 55.744064
+  longitude: 37.673721
+  unit_system: metric  
+  customize: !include customize.yaml
+
+frontend:
+  themes: !include themes.yaml
+
+config:
+
+#http:
+#  api_password: !secret http_password
+#  cors_allowed_origins:
+#    - http://10.10.20.216:7080
+#    - https://reformedreality.com
+#    - http://reformedreality.com
+#    - https://google.com
+#    - https://home-assistant.io
+#    - https://api.ai
+#  ip_ban_enabled: True
+#  login_attempts_threshold: 5
+#  base_url: !secret base_url
+#  ssl_certificate: /ssl/fullchain.pem
+#  ssl_key: /ssl/privkey.pem
+#  trusted_networks:
+#    - 127.0.0.1
+#    - ::1
+#    - 10.10.20.0/24
+#    - 10.10.10.0/24
+#    - fd00::/8
+#  # Secrets are defined in the file secrets.yaml
+#  # api_password: !secret http_password
+#  # Uncomment this if you are using SSL/TLS, running in Docker container, etc.
+#  #base_url:
+#  #ssl_certificate: /ssl/fullchain.pem
+#  #ssl_key: /ssl/privkey.pem
+
+zone: !include zones.yaml
+
+# Подключаем MQTT брокер
+mqtt:
+    broker: srv.rpi
+    username: pi
+    password: raspberry
+
+updater:
+discovery:
+hassio:
+conversation:
+history:
+logbook:
+logger:
+  default: info
+map:
+sun
+tts:
+  - platform: google
+    cache: true
+    cache_dir: /tts
+    time_memory: 300
+    language: 'ru'
+    
+cloud:
+
+# Подключаем сенсоры
+sensor:
+    - platform: mqtt
+      state_topic: dht22/temp
+      device_class: temperature
+      name: "Температура"
+    - platform: mqtt
+      state_topic: dht22/h
+      device_class: humidity
+      name: "Влажность"
+      
+# Подключаем грушу в систему
+media_player:
+    - platform: kodi
+      host: kodi.rpi
+      name: "Груша"
+
+# настраиваем оповещалки в Грушу
+notify:
+    - platform: kodi
+      name: "Дом"
+      host: kodi.rpi
