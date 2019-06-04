@@ -1,0 +1,28 @@
+# Подключаем MQTT брокер
+mqtt:
+    broker: srv.rpi
+    username: pi
+    password: raspberry
+
+# Подключаем сенсоры
+sensor:
+    - platform: mqtt
+      state_topic: dht22/temp
+      device_class: temperature
+      name: "Температура"
+    - platform: mqtt
+      state_topic: dht22/h
+      device_class: humidity
+      name: "Влажность"
+      
+# Подключаем грушу в систему
+media_player:
+    - platform: kodi
+      host: kodi.rpi
+      name: "Груша"
+
+# настраиваем оповещалки в Грушу
+notify:
+    - platform: kodi
+      name: "Дом"
+      host: kodi.rpi
